@@ -1,0 +1,80 @@
+########################################################################
+#              Htaccess soubor pro framework CodeIgniter               #
+########################################################################
+
+
+
+# Ochrana souborů před přímým načtením v prohlížeči
+# ======================================================================
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|bak|back|sql|cache)$">
+	Order Allow,Deny
+	Deny from all
+</FilesMatch>
+
+
+
+# Zakázání procházení složek
+# ======================================================================
+Options -Indexes
+
+
+
+# Nastavení výchozího souboru
+# ======================================================================
+DirectoryIndex index.php index.html index.htm
+
+
+
+# Kontrola modu rewrite
+# ======================================================================
+<IfModule !mod_rewrite.c>
+    ErrorDocument 404 /index.php
+</IfModule>
+
+
+
+# Rewrite pravidla
+# ======================================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    RewriteCond %{REQUEST_URI} ^system.*
+    RewriteCond %{REQUEST_URI} ^cache.*
+    RewriteCond %{REQUEST_URI} ^logs.*
+    RewriteCond %{REQUEST_URI} ^helpers.*
+    RewriteCond %{REQUEST_URI} ^libraries.*
+    RewriteCond %{REQUEST_URI} ^models.*
+    RewriteCond %{REQUEST_URI} ^controllers.*
+    RewriteCond %{REQUEST_URI} ^views.*
+
+    RewriteRule ^(.*)$ /index.php/$1 [L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+
+	RewriteCond $1 !^(index\.php)
+	RewriteRule ^(.*)$ /index.php?/$1 [L]
+</IfModule>
+
+
+
+# Cache
+# ======================================================================
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresDefault A600
+	ExpiresByType text/javascript A2592000
+	ExpiresByType application/javascript A2592000
+	ExpiresByType text/css A604800
+	ExpiresByType image/gif A2592000
+	ExpiresByType image/png A2592000
+	ExpiresByType image/jpeg A2592000
+	ExpiresByType image/x-icon A2592000
+	ExpiresByType text/html A1
+</IfModule>
+<IfModule mod_deflate.c>
+	<FilesMatch "\.(js|css)$">
+		SetOutputFilter DEFLATE
+	</FilesMatch>
+</IfModule>
