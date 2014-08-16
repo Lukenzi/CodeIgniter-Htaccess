@@ -90,3 +90,7 @@ DirectoryIndex index.php /index.php index.html index.htm
 		SetOutputFilter DEFLATE
 	</FilesMatch>
 </IfModule>
+
+<ifModule mod_headers.c>
+  Header unset ETag
+</ifModule>
