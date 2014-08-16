@@ -1,12 +1,12 @@
 ########################################################################
-#              Htaccess soubor pro framework CodeIgniter               #
+#          Htaccess soubor pro PHP framework CodeIgniter               #
 ########################################################################
 
 
 
 # Ochrana souborů před přímým načtením v prohlížeči
 # ======================================================================
-<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|bak|back|sql|cache)$">
+<FilesMatch "\.(htaccess|htpasswd|aahtpasswd|ini|log|sh|bak|back|sql|md|fla|swf|cache)$">
 	Order Allow,Deny
 	Deny from all
 </FilesMatch>
@@ -21,7 +21,7 @@ Options -Indexes
 
 # Nastavení výchozího souboru
 # ======================================================================
-DirectoryIndex index.php index.html index.htm
+DirectoryIndex index.php /index.php index.html index.htm
 
 
 
@@ -39,6 +39,19 @@ DirectoryIndex index.php index.html index.htm
     RewriteEngine On
     RewriteBase /
 
+	RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK|OPTIONS|HEAD)$ [NC]
+	RewriteRule ^(.*)$ - [F]
+
+	RewriteCond %{THE_REQUEST} !^[A-Z]{3,9}\ .+\ HTTP/(0\.9|1\.0|1\.1) [NC]
+	RewriteRule ^(.*)$ - [F,NS,L]
+
+	RewriteCond %{HTTP:Content-Disposition} \.php [NC]
+	RewriteCond %{HTTP:Content-Type} image/.+ [NC]
+	RewriteRule ^(.*)$ - [F,NS,L]
+
+    RewriteCond %{HTTP_USER_AGENT} ^.*(craftbot|download|extract|stripper|sucker|ninja|clshttp|webspider|leacher|collector|grabber|webpictures).*$ [NC]
+	RewriteRule ^(.*)$ - [F,L]
+
     RewriteCond %{REQUEST_URI} ^system.*
     RewriteCond %{REQUEST_URI} ^cache.*
     RewriteCond %{REQUEST_URI} ^logs.*
@@ -47,12 +60,10 @@ DirectoryIndex index.php index.html index.htm
     RewriteCond %{REQUEST_URI} ^models.*
     RewriteCond %{REQUEST_URI} ^controllers.*
     RewriteCond %{REQUEST_URI} ^views.*
-
     RewriteRule ^(.*)$ /index.php/$1 [L]
 
     RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-
 	RewriteCond $1 !^(index\.php)
 	RewriteRule ^(.*)$ /index.php?/$1 [L]
 </IfModule>
@@ -73,6 +84,7 @@ DirectoryIndex index.php index.html index.htm
 	ExpiresByType image/x-icon A2592000
 	ExpiresByType text/html A1
 </IfModule>
+
 <IfModule mod_deflate.c>
 	<FilesMatch "\.(js|css)$">
 		SetOutputFilter DEFLATE
