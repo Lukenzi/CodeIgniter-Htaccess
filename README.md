@@ -25,6 +25,7 @@ Obsahuje
 * Blokování některých potencionálně nebezpečných useragentů
 * Aktivaci "mod_deflate" pokud je k dispozici pro kompresi a tak rychlejší načítání stránek
 * Nastavení "mod_expires" pokud je k dispozici pro rychlejší načítání stránek
+* Odstranění ETagu z hlaviček pro rychlejší načítání stránek
 
 
 Upozornění
